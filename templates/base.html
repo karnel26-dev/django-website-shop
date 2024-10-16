@@ -1,19 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     {% block title %}
-    <title>Title</title>
+    <title>Магазин товаров</title>
     {% endblock title %}
 </head>
 <body>
-{% block header %}
-{% endblock header %}
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li><a href="{% url 'categories' %}">Категории</a></li>
+                <li><a href="{% url 'products' %}">Товары</a></li>
+                <li><a href="#">О нас</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
 
-{% block content %}
-{% endblock content %}
+    {% block content %}
+    {% endblock content%}
 
-{% block footer %}
-{% endblock footer %}
+    <footer>
+        <p>Контактные данные: info@example.com | Телефон: +7 (123) 456-78-90</p>
+    </footer>
 </body>
 </html>
