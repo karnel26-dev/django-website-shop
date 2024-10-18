@@ -1,9 +1,9 @@
 from django.views.generic import (ListView, CreateView,
                                   UpdateView, DetailView,
                                   DeleteView, TemplateView)
-
+from django.db.models import Q
 from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 from .models import Product, Category
 from .forms import CategoryCreateForm, ProductCreateForm
@@ -110,3 +110,17 @@ class CategoryDeleteView(DeleteView):
     template_name = 'shop/admin/category_delete.html'
     context_object_name = 'category'
     success_url = reverse_lazy('categories')
+
+
+def product_search(request):
+    query = request.GET.get('query')
+    query_text = Q(name__contains=query) & Q(price__lt=200000)
+
+    results = Product.objects.filter(query_text)
+    categories = Category.objects.all()
+
+    context = {'categories': categories, 'products': results}
+
+    return render(request, template_name="shop/index.html", context=context)
+
+

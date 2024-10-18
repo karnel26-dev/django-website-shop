@@ -108,3 +108,9 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+footer__new {
+position: absolute;
+bottom: 0;
+left: 0;
+}
