@@ -13,10 +13,12 @@
     <header>
         <nav class="navbar">
             <ul>
+                <li><a href="{% url 'index' %}">Главная</a></li>
                 <li><a href="{% url 'categories' %}">Категории</a></li>
                 <li><a href="{% url 'products' %}">Товары</a></li>
                 <li><a href="#">О нас</a></li>
                 <li><a href="#">Контакты</a></li>
+                <li><a href="{% url 'cart_detail' %}">Корзина ({{cart|length}})</a></li>
             </ul>
         </nav>
     </header>

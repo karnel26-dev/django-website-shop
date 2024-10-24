@@ -73,11 +73,11 @@ class Cart:
             yield item
 
 
-def cart_add(request, product_id):
+def cart_add(request, slug):
     # создаем корзину (получаем из сессии)
     cart = Cart(request)
 
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, slug=slug)
     cart.add(product=product)
 
     return redirect('index')

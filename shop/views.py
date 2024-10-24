@@ -13,19 +13,6 @@ class AdminTemplateView(TemplateView):
     template_name = 'shop/admin.html'
 
 
-class IndexTemplateView(TemplateView):
-    template_name = 'shop/index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        categories = Category.objects.all()
-        products = Product.objects.all()
-        context['categories'] = categories
-        context['products'] = products
-
-        return context
-
-
 class ProductListByCategory(ListView):
     model = Product
     template_name = 'shop/products_by_category.html'
@@ -39,6 +26,9 @@ class ProductListByCategory(ListView):
         return context
 
     def get_queryset(self):
+        if not self.kwargs.get('slug'):
+            return Product.objects.all()
+
         # Получаем категорию по slug из URL
         category = get_object_or_404(Category, slug=self.kwargs['slug'])
         return Product.objects.filter(category=category)

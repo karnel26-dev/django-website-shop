@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<table class="cart-table">
+<table class="cart-table" style="width:80%; text-align:justify; margin:0 auto;">
     <thead>
     <tr>
         <th>№</th>
@@ -31,18 +31,20 @@
                     {{ product.price }}
                 </td>
                 <td>
-                    {{ product.quantity }}
+                    {{ item.quantity }}
                 </td>
                 <td>
-                    {{ product.total_price }}
+                    {{ item.total_price }}
                 </td>
             </tr>
     {% endwith %}
     {% endfor %}
 </table>
 
-<p>Товаров в корзине: {{ cart|length }}</p>
-<p>Cумма товаров в корзине: {{ cart.get_total_price }}</p>
+<div style="width:80%; text-align:justify; margin:0 auto;">
+    <div>Товаров в корзине: {{ cart|length }}</div>
+    <div>Cумма товаров в корзине: {{ cart.get_total_price }}</div>
+</div>
 
 {% endblock content %}
 
