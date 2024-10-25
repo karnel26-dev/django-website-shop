@@ -6,6 +6,7 @@ from .views import (ProductListView, ProductCreateView, ProductDetailView,
 from .views import ProductListByCategory, product_search
 from cart.views import cart_add
 
+#mysite.ru/products/
 urlpatterns = [
     path('categories/add/', CategoryCreateView.as_view(), name='category_add'),
     path('categories/<slug:slug>/edit/', CategoryUpdateView.as_view(), name='category_edit'),

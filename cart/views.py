@@ -3,7 +3,6 @@ from decimal import Decimal
 from shop.models import Product
 from website_shop.settings import CART_SESSION_ID
 
-
 class Cart:
     def __init__(self, request):
         # получаем текущую сессию
@@ -58,6 +57,9 @@ class Cart:
         self.cart.clear()
         # del self.session[CART_SESSION_ID]
         self.save()
+
+    # def prod_id_str(self):
+    #     return self.cart[]
 
     def __iter__(self):
         product_ids = self.cart.keys()
