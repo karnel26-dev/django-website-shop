@@ -100,7 +100,21 @@ def cart_detail(request):
 def update_cart_by_front(request):
     data = json.loads(request.body)
     print(data)
-    pass
+    print(type(data))
+    product_id = data.get('productIdValue')
+    quantity = data.get('quantityValue')
+
+    if product_id:
+        cart = Cart(request)
+
+        product = get_object_or_404(Product, pk=int(product_id))
+        cart.add(product=product, quantity=int(quantity), override_quantity=True)
+        print('ok', cart.cart)
+        response_data = {'result': 'success'}
+    else:
+        response_data = {'result': 'failed'}
+
+    return JsonResponse(response_data)
 
 
 # @require_POST

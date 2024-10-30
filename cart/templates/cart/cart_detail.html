@@ -60,6 +60,7 @@
     }
 
     function getQuantityInCart(){
+        let cartLengthHeader = document.querySelector("#cartLengthHeader")
         let quantityInputs = document.querySelectorAll("#prod_quantity");
         let allQuantity = 0;
         quantityInputs.forEach((item,index)=>{
@@ -67,6 +68,7 @@
         });
         let cartLength = document.querySelector("#cartLength");
         cartLength.textContent = allQuantity;
+        cartLengthHeader.textContent = allQuantity;
         return allQuantity;
     }
 
@@ -80,10 +82,16 @@
         itemPrice.textContent = newItemPrice;
         getQuantityInCart();
         getTotalPriceCart();
+
     };
 
-    async function saveCartInSession(){
+    async function saveCartInSession(event){
+        let productId = event.target.parentElement.parentElement.querySelector("#productId").value
+        let quantity = event.target.value;
+
         let cartInfo = {
+            productIdValue: productId,
+            quantityValue: quantity,
             totalQuantity: getQuantityInCart(),
             totalPrice: getTotalPriceCart(),
         };
