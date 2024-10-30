@@ -56,12 +56,10 @@ class Product(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        slug = slugify(self.name)
-        counter = 1
-        while Product.objects.filter(slug=slug).exists():
-            slug = f"{slug}-{counter}"
-            counter += 1
-            self.slug = slug
+        super().save(*args, **kwargs)
+        slug_name = slugify(self.name)
+        slug = f"{slug_name}-{self.pk}"
+        self.slug = slug
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

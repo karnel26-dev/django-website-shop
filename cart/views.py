@@ -1,5 +1,11 @@
+import json
+
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http.response import JsonResponse, HttpResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 from decimal import Decimal
+
 from shop.models import Product
 from website_shop.settings import CART_SESSION_ID
 
@@ -88,6 +94,29 @@ def cart_add(request, slug):
 def cart_detail(request):
     cart = Cart(request)
     return render(request, template_name='cart/cart_detail.html', context={'cart': cart})
+
+
+@csrf_exempt
+def update_cart_by_front(request):
+    data = json.loads(request.body)
+    print(data)
+    pass
+
+
+# @require_POST
+# @csrf_exempt
+# def get_ajax(request):
+#     data = json.loads(request.body)
+#     product_count = data.get('count')
+#     product_id = data.get('id')
+#
+#     product = get_object_or_404(Products, id=product_id)
+#     product_item = CartItem.objects.get(product=product)
+#     product_item.quantity = product_count
+#     product_item.save()
+#
+#     response_data = {'result': 'success'}
+#     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
 
 
