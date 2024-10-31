@@ -95,6 +95,15 @@ header {
     text-decoration: none;
 }
 
+.btn-blue {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #2193e9;
+    color: white;
+    text-decoration: none;
+}
+
 .btn:hover {
     background-color: #218838;
 }
@@ -109,7 +118,7 @@ footer {
     width: 100%;
 }
 
-footer__new {
+.footer__new {
 position: absolute;
 bottom: 0;
 left: 0;

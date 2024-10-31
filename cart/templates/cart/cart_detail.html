@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+{% if cart|length != 0%}
 <table class="cart-table" style="width:80%; text-align:justify; margin:0 auto;">
     <thead>
     <tr>
@@ -37,26 +38,86 @@
                 <td>
                     <span id="itemPrice">{{ item.total_price|floatformat:0 }}</span>  руб.
                 </td>
+                <td>
+                    <a href="{% url 'remove_product' product.id %}">
+                        <img src="{% static 'img/cart/remove_img.png' %}" width="15px" height="15px">
+                    </a>
+                </td>
+                <td><span class="removeFetch">***</span> </td>
             </tr>
     {% endwith %}
     {% endfor %}
 </table>
 
-<div style="width:80%; text-align:justify; margin:0 auto;">
+<div style="width:80%; text-align:justify; margin:0 auto; padding-top:50px">
     <div>Товаров в корзине: <span id="cartLength">{{ cart|length }}</span></div>
     <div>Cумма товаров в корзине: <span id="totalPriceCart">{{ cart.get_total_price|floatformat:0 }}</span>  руб.</div>
+    <a href="{% url 'remove_cart' %}" class="btn">Очистить корзину</a>
+    <div style="padding-top:10px">
+        <a href="#" class="btn-blue" id="newOrder">Оформить заказ</a>
+    </div>
 </div>
 
+
+
+{% else %}
+
+<div style="display: flex;
+            justify-content: center;
+            font-size: 30px;
+            padding-top: 20px;
+            padding-bottom: 40px;">
+    Корзина пуста!
+</div>
+
+{% endif %}
+
+
 <script>
-    function getTotalPriceCart(){
-    let itemPriceInputs = document.querySelectorAll("#itemPrice");
-    let totalPrice = 0;
-    itemPriceInputs.forEach((item, index)=>{
-        totalPrice += +item.textContent;
+    async function removeItemFetch(event){
+        let productId = event.target.parentElement.parentElement.querySelector("#productId").value
+
+        let itemInfo = {
+            productIdValue: productId,
+        };
+
+        let response = await fetch('/cart/remove_fetch/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+          },
+          body: JSON.stringify(itemInfo),
         });
-    let totalPriceCart = document.querySelector("#totalPriceCart");
-    totalPriceCart.textContent = totalPrice;
-    return totalPrice;
+        }
+
+    async function removeItem(event){
+        await removeItemFetch(event);
+        afterRemoveItem(event.target.parentElement.parentElement)
+        setTimeout(updatePrice.bind(null, event), 2000);
+    }
+
+    async function getCartLength(){
+        let response = await fetch('/cart/length/', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+          },
+
+        });
+
+        let result = await response.json();
+        alert(result.cart_length);
+    };
+
+    function getTotalPriceCart(){
+        let itemPriceInputs = document.querySelectorAll("#itemPrice");
+        let totalPrice = 0;
+        itemPriceInputs.forEach((item, index)=>{
+            totalPrice += +item.textContent;
+            });
+        let totalPriceCart = document.querySelector("#totalPriceCart");
+        totalPriceCart.textContent = totalPrice;
+        return totalPrice;
     }
 
     function getQuantityInCart(){
@@ -85,6 +146,10 @@
 
     };
 
+    function afterRemoveItem(item){
+        item.remove()
+    }
+
     async function saveCartInSession(event){
         let productId = event.target.parentElement.parentElement.querySelector("#productId").value
         let quantity = event.target.value;
@@ -110,6 +175,13 @@
     const quantityInput = document.querySelectorAll("#prod_quantity")
     quantityInput.forEach((item)=>{item.addEventListener('change', updatePrice)})
     quantityInput.forEach((item)=>{item.addEventListener('change', saveCartInSession)})
+
+    const newOrderBtn = document.querySelector("#newOrder")
+    newOrderBtn.addEventListener('click', getCartLength)
+
+
+    const itemsRemove = document.querySelectorAll(".removeFetch")
+    itemsRemove.forEach((item)=>{item.addEventListener('click', removeItem)})
 
 </script>
 
