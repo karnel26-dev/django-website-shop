@@ -21,6 +21,8 @@ from shop.views import AdminTemplateView, ProductListByCategory
 urlpatterns = [
     path('staff/', AdminTemplateView.as_view(), name="admin-page"),
     path('admin/', admin.site.urls),
+    path('users/', include('users.urls')),
+    path('orders/', include('orders.urls')),
     path('products/', include('shop.urls')),
     path('cart/', include('cart.urls')),
     path('', ProductListByCategory.as_view(), name='main')
