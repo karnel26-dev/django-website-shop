@@ -54,7 +54,11 @@
     <div>Cумма товаров в корзине: <span id="totalPriceCart">{{ cart.get_total_price|floatformat:0 }}</span>  руб.</div>
     <a href="{% url 'remove_cart' %}" class="btn">Очистить корзину</a>
     <div style="padding-top:10px">
+        {% if not request.user.id %}
         <a href="#" class="btn-blue" id="newOrder">Оформить заказ</a>
+        {% else %}
+        <a href="{% url 'new_order' %}" class="btn-blue" id="newOrderUser">Оформить</a>
+        {% endif %}
     </div>
 </div>
 
@@ -276,6 +280,7 @@
         });
 
     let result = await response.json();
+    alert('Заказ успешно создан!')
     window.location.replace(result.url);
     };
 

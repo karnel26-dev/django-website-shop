@@ -28,6 +28,9 @@ class Cart:
     def save(self):
         self.session.modified = True
 
+    def copy(self):
+        return self.cart.copy()
+
     # метод помещения товара в корзину
     def add(self, product, quantity=1, override_quantity=False):
         # получаем id товара из ОБЪЕКТА товара
