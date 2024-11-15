@@ -3,45 +3,5 @@
 
 {% block content %}
 <h2>Заказ {{order.number}} успешно создан в {{order.created_at}}</h2>
-Товары в заказе:
-<table class="cart-table" style="width:80%; text-align:justify; margin:0 auto;">
-    <thead>
-    <tr>
-        <th>№</th>
-        <th>Изображение</th>
-        <th>Наименование</th>
-        <th>Цена</th>
-        <th>Количество</th>
-        <th>Стоимость</th>
-    </tr>
-    </thead>
-    {% for item in cart_order %}
-            {% with product=item.product %}
-            <tr>
-                <td>
-                    {{ forloop.counter }}
-                </td>
-                <td>
-                    {% if product.image %}
-                    <img src="{{ product.image.url }}" style="width:30px; height:30px">
-                    {% endif %}
-                </td>
-                <td>
-                    {{ product.name }}
-                </td>
-                <td>
-                    <span id="productPrice">{{ product.price|floatformat:0 }}</span> руб.
-                </td>
-                <td>
-                    {{ item.quantity }}
-                </td>
-                <td>
-                    <span id="itemPrice">{{ item.total_price|floatformat:0 }}</span>  руб.
-                </td>
-
-            </tr>
-    {% endwith %}
-    {% endfor %}
-
-</table>
+{{order.cart}}
 {% endblock content %}
