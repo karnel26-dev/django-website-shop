@@ -17,13 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from shop.views import AdminTemplateView, ProductListByCategory
+from orders.views import all_orders_list
 
 urlpatterns = [
+    path('staff/orders/', all_orders_list, name="admin_all_orders"),
     path('staff/', AdminTemplateView.as_view(), name="admin-page"),
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls')),
-    path('orders/', include('orders.urls')),
     path('products/', include('shop.urls')),
     path('cart/', include('cart.urls')),
+    path('orders/', include('orders.urls')),
+    path('users/', include('users.urls')),
     path('', ProductListByCategory.as_view(), name='main')
 ]

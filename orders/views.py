@@ -1,17 +1,21 @@
 import uuid
 import json
-from itertools import product
 
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404, redirect, reverse, render
 from django.http import JsonResponse
-
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404, reverse, render
 
 from .models import Order, OrderItem
 from .forms import OrderForm
 from cart.views import Cart, ProductCartUser
 from cart.models import CartItem
 from shop.models import Product
+
+
+user = get_user_model()
 
 
 #Создание заказа АНОНИМНЫМ пользователем AJAX запросом
@@ -37,14 +41,10 @@ def new_order_ajax(request):
     for item in cart:
         OrderItem.objects.create(order=order, product=item['product'], quantity=item['quantity'])
 
-    # orders = OrderItem.objects.filter(order=order)
-    # cart_order = cart.copy()
     cart.clear()
-
     url = reverse("main")
     json_response = {"status": "ok", "url": url}
     return JsonResponse(json_response)
-    # return render(request, template_name='orders/order_create.html', context={'cart_order': cart_order})
 
 
 def new_order(request):
@@ -70,6 +70,42 @@ def new_order(request):
                 OrderItem.objects.create(order=order_form.instance, product=item['product'], quantity=item['quantity'])
             cart.user_cart.delete()
         return render(request, template_name='orders/order_create.html', context={"order": order_form.instance})
+
+
+@login_required
+def orders_list(request):
+    orders = Order.objects.filter(user=request.user)
+    context = {"orders": orders}
+
+    return render(request, template_name="orders/orders.html", context=context)
+
+
+@login_required
+def order_detail(request, number):
+    admin = user.objects.get(username='staff')
+    if request.user == admin:
+        order = get_object_or_404(Order, number=number)
+        context = {"order": order}
+
+        return render(request, template_name="orders/order_detail.html", context=context)
+
+    order = get_object_or_404(Order, number=number, user=request.user)
+    order_items = order.order_items.all()
+    context = {"order": order, "order_items": order_items}
+
+    return render(request, template_name="orders/order_detail.html", context=context)
+
+
+def all_orders_list(request):
+    admin = user.objects.get(username='staff')
+    if request.user != admin:
+        raise PermissionDenied
+
+    orders = Order.objects.all()
+    context = {"orders": orders}
+
+    return render(request, template_name="shop/admin/orders.html", context=context)
+
 
 
 

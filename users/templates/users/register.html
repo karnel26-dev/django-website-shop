@@ -1,10 +1,13 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h1>Регистрация пользователя</h1>
-<form action="." method="post">
-    {{user_form.as_p}}
+
+<h2>Регистрация пользователя</h2>
+<form method="post">
     {% csrf_token %}
-    <p><input type="submit" value="Зарегистрироваться"></p>
+    {{ register_form }}
+
+    <button type="submit">Зарегистрироваться</button>
 </form>
+
 {% endblock content %}

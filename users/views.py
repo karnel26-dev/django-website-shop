@@ -58,7 +58,7 @@ def log_in(request):
 @login_required
 def log_out(request):
     logout(request)
-    return redirect('blog:index')
+    return redirect('main')
 
 
 @login_required

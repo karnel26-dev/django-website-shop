@@ -1,11 +1,10 @@
 from django.urls import path
-from .views import new_order_ajax, new_order
+from .views import new_order_ajax, new_order, orders_list, order_detail
 
 
 urlpatterns = [
-    path('new/', new_order_ajax, name="new_order_ajax"),
-    path('newOrder/', new_order, name="new_order"),
-    # path('detail/', update_cart_by_front, name="update_cart_session"),
-    # path('user/<int:pk>/', update_cart_by_front, name="update_cart_session"),
-
+    path('new/quick/', new_order_ajax, name='new_quick_order'),  # Anonym USER - AJAX
+    path('new/', new_order, name='new_order'),
+    path('list/', orders_list, name='orders'),
+    path('detail/<str:number>/', order_detail, name='order_detail'),
 ]

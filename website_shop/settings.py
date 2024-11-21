@@ -137,7 +137,7 @@ CART_SESSION_ID = 'cart'
 
 AUTH_USER_MODEL = "users.CustomUser"
 
-LOGIN_REDIRECT_URL = 'blog:post_list'
+LOGIN_REDIRECT_URL = 'main'
 LOGIN_URL = 'users:login'
 
 #SESSION_EXPIRE_AT_BROWSER_CLOSE = False
